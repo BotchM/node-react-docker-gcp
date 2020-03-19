@@ -1,12 +1,12 @@
-CLIENT_IP=$(gcloud container clusters describe asn3-app	\
+CLIENT_IP=$(gcloud compute instances describe gke-asn3-app-default-pool-20c9b250-4jp7	 \
     --zone=us-west1-a \
     --format='value(networkInterfaces[0].networkIP)')
 
 sudo mysql -uroot -ptest \
-    -e "CREATE USER 'TESTWEB'@'10.138.0.7' IDENTIFIED BY 'test';"
+    -e "CREATE USER 'TESTWEB'@'10.240.10.223' IDENTIFIED BY 'test';"
 
 sudo mysql -uroot -ptest -e \
-    "GRANT ALL PRIVILEGES ON *.* TO 'TESTWEB'@'10.138.0.7' \
+    "GRANT ALL PRIVILEGES ON *.* TO 'TESTWEB'@'10.240.10.223' \
     IDENTIFIED BY 'test';"
 
 gcloud compute instances delete-access-config asn3-db \
@@ -44,3 +44,5 @@ kubectl expose deployment web --type=LoadBalancer --port 80 --target-port 8080
 //
 
 kubectl set image deployment/web web-app=gcr.io/${PROJECT_ID}/web-app:v5
+
+gcloud container clusters resize asn3-app --size=0 --zone us-west1-a
