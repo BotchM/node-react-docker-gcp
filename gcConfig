@@ -1,4 +1,4 @@
-CLIENT_IP=$(gcloud compute instances describe gke-asn3-app-default-pool-20c9b250-4jp7	\
+CLIENT_IP=$(gcloud compute instances describe asn3-app	\
     --zone=us-west1-a \
     --format='value(networkInterfaces[0].networkIP)')
 
@@ -18,3 +18,7 @@ sudo mysql --host=asn3-db --user=test \
 
 docker push gcr.io/${PROJECT_ID}/
 gcr.io/${PROJECT_ID}/web-app:v1
+
+gcloud compute firewall-rules create "mysql-remote-access" \
+    --allow tcp:3306 --source-tags "asn3-app" \
+    --target-tags "asn3-db"
