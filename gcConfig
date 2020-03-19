@@ -1,0 +1,17 @@
+CLIENT_IP=$(gcloud compute instances describe gke-asn3-app-default-pool-20c9b250-4jp7	\
+    --zone=us-west1-a \
+    --format='value(networkInterfaces[0].networkIP)')
+
+sudo mysql -uroot -ptest \
+    -e "CREATE USER 'test'@'${CLIENT_IP}' IDENTIFIED BY 'test';"
+
+sudo mysql -uroot -ptest -e \
+    "GRANT ALL PRIVILEGES ON *.* TO 'test'@'${CLIENT_IP}' \
+    IDENTIFIED BY 'test';"
+
+gcloud compute instances delete-access-config asn3-db \
+    --access-config-name "External NAT" \
+    --zone="us-west1-a"
+
+sudo mysql --host=asn3-db --user=test \
+    --password=test -e "SHOW DATABASES;"

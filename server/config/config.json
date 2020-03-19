@@ -3,7 +3,7 @@
     "username": "test",
     "password": "test",
     "database": "test",
-    "host": "127.0.0.1",
+    "host": "asn3-db",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -11,7 +11,7 @@
     "username": "test",
     "password": "test",
     "database": "test",
-    "host": "127.0.0.1",
+    "host": "asn3-db",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -19,7 +19,7 @@
     "username": "test",
     "password": "test",
     "database": "test",
-    "host": "127.0.0.1",
+    "host": "asn3-db",
     "dialect": "mysql",
     "operatorsAliases": false
   }
