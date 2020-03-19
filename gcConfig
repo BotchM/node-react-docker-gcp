@@ -1,19 +1,19 @@
-CLIENT_IP=$(gcloud compute instances describe gke-asn3-app-default-pool-20c9b250-4jp7	\
+CLIENT_IP=$(gcloud container clusters describe asn3-app	\
     --zone=us-west1-a \
     --format='value(networkInterfaces[0].networkIP)')
 
 sudo mysql -uroot -ptest \
-    -e "CREATE USER 'TESTWEB'@'${CLIENT_IP}' IDENTIFIED BY 'test';"
+    -e "CREATE USER 'TESTWEB'@'10.138.0.7' IDENTIFIED BY 'test';"
 
 sudo mysql -uroot -ptest -e \
-    "GRANT ALL PRIVILEGES ON *.* TO 'TESTWEB'@'${CLIENT_IP}' \
+    "GRANT ALL PRIVILEGES ON *.* TO 'TESTWEB'@'10.138.0.7' \
     IDENTIFIED BY 'test';"
 
 gcloud compute instances delete-access-config asn3-db \
     --access-config-name "External NAT" \
     --zone="us-west1-a"
 
-sudo mysql --host=34.82.137.13 --user=TESTWEB \
+sudo mysql --host=10.138.0.7 --user=TESTWEB \
     --password=test -e "SHOW DATABASES;"
 
 docker push gcr.io/${PROJECT_ID}/
@@ -34,3 +34,13 @@ docker push gcr.io/${PROJECT_ID}/web-app:v4
 docker run --rm -p 8080:8080 gcr.io/${PROJECT_ID}/web-app:v4
 
 gcloud compute instances create my-client --zone us-west1-a --image-project ubuntu-os-cloud --image-family ubuntu-1804-lts --scopes https://www.googleapis.com/auth/cloud-platform
+
+
+gcloud compute firewall-rules create "asn3-app-to-all-vms-on-network" --network="default" --source-ranges="10.4.0.0/14" --allow=tcp,udp,icmp,esp,ah,sctp
+
+//
+kubectl create deployment web --image=gcr.io/${PROJECT_ID}/web-app:v5
+kubectl expose deployment web --type=LoadBalancer --port 80 --target-port 8080
+//
+
+kubectl set image deployment/web web-app=gcr.io/${PROJECT_ID}/web-app:v5
