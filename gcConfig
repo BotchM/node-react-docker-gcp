@@ -15,3 +15,6 @@ gcloud compute instances delete-access-config asn3-db \
 
 sudo mysql --host=asn3-db --user=test \
     --password=test -e "SHOW DATABASES;"
+
+docker push gcr.io/${PROJECT_ID}/
+gcr.io/${PROJECT_ID}/web-app:v1
