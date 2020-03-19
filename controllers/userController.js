@@ -8,9 +8,8 @@ const Op        = db.Sequelize.Op;
  */
 exports.getAll = async (req, res) => {
     // users?name=mahmoud
-    const name = req.query.name;
-    let condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    console.log(condition)
+    const email = req.query.email;
+    let condition = email ? { email: { [Op.like]: `%${email}%` } } : null;
 
     try {
         const all = await Users.findAll({ where: condition })

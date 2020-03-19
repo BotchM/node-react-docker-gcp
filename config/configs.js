@@ -6,7 +6,12 @@ const logger = require('morgan');
 const router = require('./routes');
 const path = require('path');
 const errorHandler = require('errorhandler');
+const cors = require("cors");
 const db = require("../models");
+
+const corsOptions = {
+  origin: "http://localhost:3000"
+};
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -23,6 +28,7 @@ module.exports = app => {
   /**
    * Express configuration.
    */
+  app.use(cors(corsOptions));
   app.use(logger('dev'));
   app.use(errorHandler());
   app.use(express.json());
