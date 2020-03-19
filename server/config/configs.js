@@ -32,11 +32,11 @@ module.exports = app => {
   app.use(logger('dev'));
   app.use(errorHandler());
   app.use(express.json());
-  app.set('port', process.env.PORT || 8001);
+  app.set('port', process.env.PORT || 8080);
   app.use(express.urlencoded({ extended: true }));
   app.use('/v1/api/users', router);
-  app.use(express.static(path.join(__dirname,'../client/build')));
+  app.use(express.static(path.join(__dirname,'../../client/build')));
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
   });
 };
