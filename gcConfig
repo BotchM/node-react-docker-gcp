@@ -13,7 +13,7 @@ gcloud compute instances delete-access-config gke-asn3-app-default-pool-20c9b250
     --access-config-name "External NAT" \
     --zone="us-west1-a"
 
-sudo mysql --host=10.138.0.5 --user=TESTUSER \
+sudo mysql --host=asn3-db --user=TESTUSER \
     --password=test -e "SHOW DATABASES;"
 
 docker push gcr.io/${PROJECT_ID}/
@@ -27,3 +27,8 @@ gcloud compute instances add-tags asn3-db --tags mysql-db --zone=us-west1-a
 gcloud compute instances add-tags gke-asn3-app-default-pool-20c9b250-4jp7 --tags web-app --zone=us-west1-a
 
 gcloud compute firewall-rules create "mysql-remote-access" --allow tcp:3306 --source-tags "web-app" --target-tags "mysql-db"
+
+
+docker build -t gcr.io/${PROJECT_ID}/web-app:v4 .
+docker push gcr.io/${PROJECT_ID}/web-app:v4
+docker run --rm -p 8080:8080 gcr.io/${PROJECT_ID}/web-app:v4
