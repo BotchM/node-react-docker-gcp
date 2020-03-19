@@ -3,17 +3,17 @@ CLIENT_IP=$(gcloud compute instances describe gke-asn3-app-default-pool-20c9b250
     --format='value(networkInterfaces[0].networkIP)')
 
 sudo mysql -uroot -ptest \
-    -e "CREATE USER 'TESTWEB'@'10.240.10.223' IDENTIFIED BY 'test';"
+    -e "CREATE USER 'TESTWEB'@'${CLIENT_IP}' IDENTIFIED BY 'test';"
 
 sudo mysql -uroot -ptest -e \
-    "GRANT ALL PRIVILEGES ON *.* TO 'TESTWEB'@'10.240.10.223' \
+    "GRANT ALL PRIVILEGES ON *.* TO 'TESTWEB'@'${CLIENT_IP}' \
     IDENTIFIED BY 'test';"
 
-gcloud compute instances delete-access-config gke-asn3-app-default-pool-20c9b250-4jp7 \
+gcloud compute instances delete-access-config asn3-db \
     --access-config-name "External NAT" \
     --zone="us-west1-a"
 
-sudo mysql --host=asn3-db --user=TESTUSER \
+sudo mysql --host=10.138.0.8 --user=TESTWEB \
     --password=test -e "SHOW DATABASES;"
 
 docker push gcr.io/${PROJECT_ID}/

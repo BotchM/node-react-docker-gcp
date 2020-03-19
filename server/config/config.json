@@ -3,7 +3,7 @@
     "username": "TESTWEB",
     "password": "test",
     "database": "test",
-    "host": "10.138.0.5",
+    "host": "10.138.0.8",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -11,7 +11,7 @@
     "username": "TESTWEB",
     "password": "test",
     "database": "test",
-    "host": "10.138.0.5",
+    "host": "10.138.0.8",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -19,7 +19,7 @@
     "username": "test",
     "password": "test",
     "database": "test",
-    "host": "10.138.0.5",
+    "host": "10.138.0.8",
     "dialect": "mysql",
     "operatorsAliases": false
   }
