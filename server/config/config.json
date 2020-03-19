@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "test",
+    "username": "TESTWEB",
     "password": "test",
     "database": "test",
     "host": "10.138.0.5",
@@ -8,7 +8,7 @@
     "operatorsAliases": false
   },
   "test": {
-    "username": "test",
+    "username": "TESTWEB",
     "password": "test",
     "database": "test",
     "host": "10.138.0.5",
