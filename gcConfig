@@ -13,7 +13,7 @@ gcloud compute instances delete-access-config asn3-db \
     --access-config-name "External NAT" \
     --zone="us-west1-a"
 
-sudo mysql --host=10.138.0.8 --user=TESTWEB \
+sudo mysql --host=34.82.137.13 --user=TESTWEB \
     --password=test -e "SHOW DATABASES;"
 
 docker push gcr.io/${PROJECT_ID}/
@@ -32,3 +32,5 @@ gcloud compute firewall-rules create "mysql-remote-access" --allow tcp:3306 --so
 docker build -t gcr.io/${PROJECT_ID}/web-app:v4 .
 docker push gcr.io/${PROJECT_ID}/web-app:v4
 docker run --rm -p 8080:8080 gcr.io/${PROJECT_ID}/web-app:v4
+
+gcloud compute instances create my-client --zone us-west1-a --image-project ubuntu-os-cloud --image-family ubuntu-1804-lts --scopes https://www.googleapis.com/auth/cloud-platform
