@@ -12,7 +12,7 @@ exports.getAll = async (req, res) => {
     let condition = email ? { email: { [Op.like]: `%${email}%` } } : null;
 
     try {
-        const all = await Users.findAll({ where: condition })
+        const all = await Users.findAll({ where: condition });
         res.json( all );
     } catch (error) {
         res.status(500).send({

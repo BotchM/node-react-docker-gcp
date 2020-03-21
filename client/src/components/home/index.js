@@ -29,7 +29,7 @@ const UsersTable = ({users}) => (
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.age}</td>
-                        <td>{user.active.toString()}</td>
+                        <td>{user.active}</td>
                     </tr>
                 </tbody>
                 </>
@@ -55,31 +55,35 @@ const Home = () => {
         setUsers(await response.json());
     }
 
-    const handleSubmit = async event => {
+    // const fetchAsync = async email => await (await fetch(`/v1/api/users/?email=${email}`)).json()
+
+    const updateUser = async event => {
         const form = event.target;
-        let method = 'POST';
-        let active;
+        const userId = form.elements.userId.value;
 
-        // // Check if user exists update else add new user
-        // const email = form.elements.formGroupEmail.value;
+        const data = {
+            name: form.elements.formGroupName.value,
+            email: form.elements.formGroupEmail.value,
+            age: form.elements.formGroupAge.value,
+            active: true
+        }
 
-        // const userExists = await fetch(`/v1/api/users?email=${email}`, {
-        //     method: 'GET', 
-        //     cache: 'no-cache',
-        //     headers: {
-        //       'Content-Type': 'application/json'
-        //     },
-        // })
+        console.log(userId)
 
-        // const result = await userExists.json();
+        const response = await fetch(`/v1/api/users/${userId}`, {
+            method: 'PUT', 
+            cache: 'no-cache',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-        // if(result.ok){
-        //     method = 'PUT';
-        //     userId = 1;
-        //     active = true;
-        // }
+        setUsers([...users, await response.json()]);
 
-        // console.log(result[0])
+    }
+    const createuser = async event => {
+        const form = event.target;
         
         const data = {
             name: form.elements.formGroupName.value,
@@ -88,8 +92,8 @@ const Home = () => {
             active: false
         }
 
-        const response = await fetch(`/v1/api/users/${userId}`, {
-            method: method, 
+        const response = await fetch(`/v1/api/users`, {
+            method: 'POST', 
             cache: 'no-cache',
             headers: {
               'Content-Type': 'application/json'
@@ -127,7 +131,7 @@ const Home = () => {
             <Form onSubmit={deleteUser}>
                 <Row>
                     <Col>
-                        <Form.Group as={Col} controlId="userId">
+                        <Form.Group controlId="userId">
                             <Form.Control required type="text" placeholder="Enter User Id" />
                         </Form.Group>
                     </Col>
@@ -140,7 +144,7 @@ const Home = () => {
                 </Row>
             </Form>
             <hr/>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={createuser}>
                 <Form.Group controlId="formGroupName">
                     <Form.Label>Name</Form.Label>
                     <Form.Control required type="text" placeholder="Enter name" />
@@ -156,7 +160,30 @@ const Home = () => {
                 <Button 
                     type="submit"
                     variant="info"
-                >Create/Update User</Button>{' '}
+                >Create</Button>{' '}
+            </Form>
+            <hr />
+            <Form onSubmit={updateUser}>
+                <Form.Group controlId="formGroupName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control required type="text" placeholder="Enter name" />
+                </Form.Group>
+                <Form.Group controlId="formGroupEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control required type="email" placeholder="Enter Email" />
+                </Form.Group>
+                <Form.Group controlId="formGroupAge">
+                    <Form.Label>Age</Form.Label>
+                    <Form.Control required type="text" placeholder="Enter Age" />
+                </Form.Group>
+                <Form.Group controlId="userId">
+                    <Form.Label>Id (Id of the user you want to update)</Form.Label>
+                    <Form.Control required type="text" placeholder="Enter User Id" />
+                    </Form.Group>
+                <Button 
+                    type="submit"
+                    variant="info"
+                >Update User</Button>{' '}
             </Form>
             <hr/>
                 <Button 
