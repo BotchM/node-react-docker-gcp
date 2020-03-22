@@ -29,7 +29,7 @@ const UsersTable = ({users}) => (
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.age}</td>
-                        <td>{user.active}</td>
+                        <td>{user.active.toString()}</td>
                     </tr>
                 </tbody>
                 </>

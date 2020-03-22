@@ -3,7 +3,7 @@
     "username": "TESTWEB",
     "password": "test",
     "database": "test",
-    "host": "34.82.59.143",
+    "host": "my-service",
     "dialect": "mysql",
     "operatorsAliases": false
   },
@@ -11,15 +11,15 @@
     "username": "TESTWEB",
     "password": "test",
     "database": "test",
-    "host": "34.82.59.143",
+    "host": "my-service",
     "dialect": "mysql",
     "operatorsAliases": false
   },
   "production": {
-    "username": "test",
+    "username": "TESTWEB",
     "password": "test",
     "database": "test",
-    "host": "34.82.59.143",
+    "host": "my-service",
     "dialect": "mysql",
     "operatorsAliases": false
   }

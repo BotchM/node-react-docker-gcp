@@ -33,11 +33,6 @@ docker build -t gcr.io/${PROJECT_ID}/web-app:v4 .
 docker push gcr.io/${PROJECT_ID}/web-app:v4
 docker run --rm -p 8080:8080 gcr.io/${PROJECT_ID}/web-app:v4
 
-gcloud compute instances create my-client --zone us-west1-a --image-project ubuntu-os-cloud --image-family ubuntu-1804-lts --scopes https://www.googleapis.com/auth/cloud-platform
-
-
-gcloud compute firewall-rules create "asn3-app-to-all-vms-on-network" --network="default" --source-ranges="10.4.0.0/14" --allow=tcp,udp,icmp,esp,ah,sctp
-
 //
 kubectl create deployment web --image=gcr.io/${PROJECT_ID}/web-app:v5
 kubectl expose deployment web --type=LoadBalancer --port 80 --target-port 8080
@@ -45,4 +40,17 @@ kubectl expose deployment web --type=LoadBalancer --port 80 --target-port 8080
 
 kubectl set image deployment/web web-app=gcr.io/${PROJECT_ID}/web-app:v5
 
+gcloud compute instances list
+
+kubectl get pods
+
+kubectl get service
+
+gcloud compute instances create my-client --zone us-west1-a --image-project ubuntu-os-cloud --image-family ubuntu-1804-lts --scopes https://www.googleapis.com/auth/cloud-platform
+
+gcloud compute firewall-rules create "asn3-app-to-all-vms-on-network" --network="default" --source-ranges="10.4.0.0/14" --allow=tcp,udp,icmp,esp,ah,sctp
+
 gcloud container clusters resize asn3-app --size=0 --zone us-west1-a
+
+gcloud compute instances describe asn3-db \
+    --format='get(hostname)'
